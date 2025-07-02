@@ -9,19 +9,19 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "clienti")
-public class Cliente {
+@Table(name = "customers")
+public class Customer {
     @Id
     @GeneratedValue
     private long id;
 
-    private String nome;
-    private String cognome;
+    private String name;
+    private String surname;
     private String email;
-    private String numTelefono;
+    private String phoneNumber;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "cliente")
-    private List<Prenotazione> prenotazioni = new ArrayList<>();
+    @OneToMany(mappedBy = "customer")
+    private List<Reservation> reservations = new ArrayList<>();
 
 }

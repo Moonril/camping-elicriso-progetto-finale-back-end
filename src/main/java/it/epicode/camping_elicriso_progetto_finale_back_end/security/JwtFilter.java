@@ -3,7 +3,7 @@ package it.epicode.camping_elicriso_progetto_finale_back_end.security;
 
 import it.epicode.camping_elicriso_progetto_finale_back_end.exceptions.NotFoundException;
 import it.epicode.camping_elicriso_progetto_finale_back_end.exceptions.UnauthorizedException;
-import it.epicode.camping_elicriso_progetto_finale_back_end.models.Utente;
+import it.epicode.camping_elicriso_progetto_finale_back_end.models.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String authorization = request.getHeader("Authorization");
         if(authorization== null || !authorization.startsWith("Bearer ")){
-            throw new UnauthorizedException("Token non presente");
+            throw new UnauthorizedException("Token not present");
         } else {
             String token = authorization.substring(7); // mi prendo la parte dopo "bearer "
             jwtTool.validateToken(token);
@@ -39,16 +39,16 @@ public class JwtFilter extends OncePerRequestFilter {
             try{
 
 
-                Utente utente = jwtTool.getUtenteFromToken(token);
+                User user = jwtTool.getUserFromToken(token);
 
-                Authentication authentication = new UsernamePasswordAuthenticationToken(utente, null, utente.getAuthorities());
+                Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
             } catch (NotFoundException e) {
-                throw new UnauthorizedException("Utente collegato al token non trovato");
+                throw new UnauthorizedException("User connected to token not valid");
             }
 
 

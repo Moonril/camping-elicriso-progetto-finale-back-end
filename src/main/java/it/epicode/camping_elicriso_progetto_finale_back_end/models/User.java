@@ -1,6 +1,6 @@
 package it.epicode.camping_elicriso_progetto_finale_back_end.models;
 
-import it.epicode.camping_elicriso_progetto_finale_back_end.enums.TipoUtente;
+import it.epicode.camping_elicriso_progetto_finale_back_end.enums.UserType;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,13 +12,13 @@ import java.util.List;
 
 @Data
 @Entity
-public class Utente implements UserDetails {
+public class User implements UserDetails {
     @Id
     @GeneratedValue
     private int id;
 
-    private String nome;
-    private String cognome;
+    private String name;
+    private String surname;
 
     @Column(unique = true)
     private String username;
@@ -28,12 +28,12 @@ public class Utente implements UserDetails {
 
     private String avatar;
     @Enumerated(EnumType.STRING)
-    private TipoUtente tipoUtente;
+    private UserType userType;
 
     //che è sta roba?
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(tipoUtente.name()));
+        return List.of(new SimpleGrantedAuthority(userType.name()));
     }
 
     //roba per testare in contesti non reali

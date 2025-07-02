@@ -45,10 +45,10 @@ public class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/html/**").permitAll());
 
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/clienti/**").permitAll());
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/alloggi/**").permitAll());
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/prenotazioni/**").permitAll());
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/ristorante/**").permitAll());
+        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/customers/**").permitAll());
+        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/accomodations/**").permitAll());
+        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/reservations/**").permitAll());
+        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/restaurant/reservations/**").permitAll());
 
         httpSecurity.authorizeHttpRequests(http->http.anyRequest().denyAll());
 

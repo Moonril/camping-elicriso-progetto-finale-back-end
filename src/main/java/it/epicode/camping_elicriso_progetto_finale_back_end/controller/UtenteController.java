@@ -1,9 +1,9 @@
 package it.epicode.camping_elicriso_progetto_finale_back_end.controller;
 
-import it.epicode.camping_elicriso_progetto_finale_back_end.dto.UtenteDto;
+import it.epicode.camping_elicriso_progetto_finale_back_end.dto.UserDto;
 import it.epicode.camping_elicriso_progetto_finale_back_end.exceptions.NotFoundException;
-import it.epicode.camping_elicriso_progetto_finale_back_end.models.Utente;
-import it.epicode.camping_elicriso_progetto_finale_back_end.service.UtenteService;
+import it.epicode.camping_elicriso_progetto_finale_back_end.models.User;
+import it.epicode.camping_elicriso_progetto_finale_back_end.service.UserService;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,12 +21,12 @@ import java.io.IOException;
 public class UtenteController {
 
     @Autowired
-    private UtenteService utenteService;
+    private UserService userService;
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Utente saveUtente(@RequestBody @Validated UtenteDto utenteDto, BindingResult bindingResult)
+    public User saveUtente(@RequestBody @Validated UserDto userDto, BindingResult bindingResult)
             throws ValidationException {
         if(bindingResult.hasErrors()){
             throw new ValidationException(bindingResult.getAllErrors().
@@ -34,46 +34,46 @@ public class UtenteController {
                     .reduce("",(e,s)->e+s));
         }
 
-        return utenteService.saveUtente(utenteDto);
+        return userService.saveUtente(userDto);
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Utente getUtente(@PathVariable int id) throws NotFoundException {
-        return utenteService.getUtente(id);
+    public User getUtente(@PathVariable int id) throws NotFoundException {
+        return userService.getUtente(id);
     }
 
     @GetMapping("")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Page<Utente> getAllUtenti(@RequestParam(defaultValue = "0") int page,
-                                     @RequestParam(defaultValue = "10") int size,
-                                     @RequestParam(defaultValue = "id") String sortBy){
-        return utenteService.getAllUtenti(page, size, sortBy);
+    public Page<User> getAllUtenti(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size,
+                                   @RequestParam(defaultValue = "id") String sortBy){
+        return userService.getAllUtenti(page, size, sortBy);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('USER')")
-    public Utente updateUtente(@PathVariable int id, @RequestBody
-                               @Validated UtenteDto utenteDto,
-                               BindingResult bindingResult) throws NotFoundException, ValidationException {
+    public User updateUtente(@PathVariable int id, @RequestBody
+                               @Validated UserDto userDto,
+                             BindingResult bindingResult) throws NotFoundException, ValidationException {
 
         if(bindingResult.hasErrors()){
             throw new ValidationException(bindingResult.getAllErrors().
                     stream().map(objectError -> objectError.getDefaultMessage())
                     .reduce("",(e,s)->e+s));
         }
-        return utenteService.updateUtente(id, utenteDto);
+        return userService.updateUtente(id, userDto);
     }
 
     @PatchMapping("/{id}")
     public String patchUtente(@PathVariable int id, @RequestBody MultipartFile file)
             throws NotFoundException, IOException {
-        return utenteService.patchUtente(id, file);
+        return userService.patchUtente(id, file);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('USER')")
     public void deleteUtente(@PathVariable int id) throws NotFoundException {
-        utenteService.deleteUtente(id);
+        userService.deleteUtente(id);
     }
 }
