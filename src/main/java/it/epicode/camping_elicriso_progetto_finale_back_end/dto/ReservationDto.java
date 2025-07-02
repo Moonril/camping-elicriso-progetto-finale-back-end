@@ -1,9 +1,6 @@
 package it.epicode.camping_elicriso_progetto_finale_back_end.dto;
 
-import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -25,10 +22,11 @@ public class ReservationDto {
     }
 
     @NotNull(message = "The field numberOfCustomers cannot be empty")
-    @Size(min = 1, max = 6)// numero di persone massimo, tanti quanti permette l'alloggio
+    @Min(1)
+    @Max(6) // numero di persone massimo, tanti quanti permette l'alloggio
     private int numberOfCustomers;
     private String preference;
 
     @NotNull(message = "The field customerId cannot be empty")
-    private long customerId;
+    private int customerId;
 }

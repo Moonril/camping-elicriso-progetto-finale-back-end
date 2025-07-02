@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class Reservation {
     @Id
     @GeneratedValue
-    private long id;
+    private int id;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

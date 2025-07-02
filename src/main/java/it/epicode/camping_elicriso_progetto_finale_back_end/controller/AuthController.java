@@ -34,7 +34,7 @@ public class AuthController {
                     stream().map(objectError -> objectError.getDefaultMessage())
                     .reduce("",(e,s)->e+s));
         }
-        return userService.saveUtente(userDto);
+        return userService.saveUser(userDto);
     }
 
     @CrossOrigin(origins = "http://localhost:63342/")

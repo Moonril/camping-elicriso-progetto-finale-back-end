@@ -17,8 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping(path = "/utenti")
-public class UtenteController {
+@RequestMapping(path = "/users")
+public class UserController {
 
     @Autowired
     private UserService userService;
@@ -34,21 +34,21 @@ public class UtenteController {
                     .reduce("",(e,s)->e+s));
         }
 
-        return userService.saveUtente(userDto);
+        return userService.saveUser(userDto);
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public User getUtente(@PathVariable int id) throws NotFoundException {
-        return userService.getUtente(id);
+    public User getUser(@PathVariable int id) throws NotFoundException {
+        return userService.getUser(id);
     }
 
     @GetMapping("")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Page<User> getAllUtenti(@RequestParam(defaultValue = "0") int page,
+    public Page<User> getAllUsers(@RequestParam(defaultValue = "0") int page,
                                    @RequestParam(defaultValue = "10") int size,
                                    @RequestParam(defaultValue = "id") String sortBy){
-        return userService.getAllUtenti(page, size, sortBy);
+        return userService.getAllUsers(page, size, sortBy);
     }
 
     @PutMapping("/{id}")
@@ -62,18 +62,18 @@ public class UtenteController {
                     stream().map(objectError -> objectError.getDefaultMessage())
                     .reduce("",(e,s)->e+s));
         }
-        return userService.updateUtente(id, userDto);
+        return userService.updateUser(id, userDto);
     }
 
     @PatchMapping("/{id}")
-    public String patchUtente(@PathVariable int id, @RequestBody MultipartFile file)
+    public String patchUser(@PathVariable int id, @RequestBody MultipartFile file)
             throws NotFoundException, IOException {
-        return userService.patchUtente(id, file);
+        return userService.patchUser(id, file);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('USER')")
-    public void deleteUtente(@PathVariable int id) throws NotFoundException {
-        userService.deleteUtente(id);
+    public void deleteUser(@PathVariable int id) throws NotFoundException {
+        userService.deleteUser(id);
     }
 }

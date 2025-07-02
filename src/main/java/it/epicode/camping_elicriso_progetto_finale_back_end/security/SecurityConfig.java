@@ -44,6 +44,7 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/html/**").permitAll());
 
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/html/**").permitAll());
+        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/users/**").permitAll());
 
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/customers/**").permitAll());
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/accomodations/**").permitAll());

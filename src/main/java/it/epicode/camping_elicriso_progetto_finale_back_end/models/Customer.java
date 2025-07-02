@@ -13,7 +13,7 @@ import java.util.List;
 public class Customer {
     @Id
     @GeneratedValue
-    private long id;
+    private int id;
 
     private String name;
     private String surname;

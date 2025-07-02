@@ -41,7 +41,9 @@ public class CustomerService {
         Customer customerToUpdate = getCustomer(id);
 
         customerToUpdate.setName(customerDto.getName());
-
+        customerToUpdate.setSurname(customerDto.getSurname());
+        customerToUpdate.setEmail(customerDto.getEmail());
+        customerToUpdate.setPhoneNumber(customerDto.getPhoneNumber());
 
         return customerRepository.save(customerToUpdate);
     }
