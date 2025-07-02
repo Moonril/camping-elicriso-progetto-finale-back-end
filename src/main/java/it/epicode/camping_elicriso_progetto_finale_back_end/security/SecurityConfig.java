@@ -40,18 +40,15 @@ public class SecurityConfig {
 
         // prevede la approvazione o negazione di un servizio endpoint
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/auth/**").permitAll());
-//        httpSecurity.authorizeHttpRequests(http->http.requestMatchers(HttpMethod.GET,"/studenti/**").permitAll());
+
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/html/**").permitAll());
 
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/html/**").permitAll());
 
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/clienti/**").permitAll());
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/comuni/**").permitAll());
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/province/**").permitAll());
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/fatture/**").permitAll());
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/indirizzi/**").permitAll());
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/utenti/**").permitAll());
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers(HttpMethod.POST).permitAll());
+        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/alloggi/**").permitAll());
+        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/prenotazioni/**").permitAll());
+        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/ristorante/**").permitAll());
 
         httpSecurity.authorizeHttpRequests(http->http.anyRequest().denyAll());
 
