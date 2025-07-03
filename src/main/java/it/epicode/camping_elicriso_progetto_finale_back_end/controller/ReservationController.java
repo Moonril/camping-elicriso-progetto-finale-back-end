@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
-@RequestMapping(path = "/reservations")
+@RequestMapping(path = "/camping/reservations")
 public class ReservationController {
 
     @Autowired
@@ -44,7 +44,7 @@ public class ReservationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('ADMIN', 'GUEST')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'GUEST')")
     public Reservation saveReservation(@RequestBody @Validated ReservationDto reservationDto, BindingResult bindingResult) throws NotFoundException, ValidationException {
         if (bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult.getAllErrors().stream()

@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -36,6 +37,11 @@ public class Reservation {
     private Customer customer;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "reservation")
-    private List<Accommodation> accommodations;
+    @ManyToMany
+    @JoinTable(
+            name = "reservation_accommodation",
+            joinColumns = @JoinColumn(name = "reservation_id"),
+            inverseJoinColumns = @JoinColumn(name = "accommodation_id")
+    )
+    private Set<Accommodation> accommodations;
 }

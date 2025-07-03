@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Data
 @Entity
@@ -21,7 +22,9 @@ public abstract class Accommodation {
     @Enumerated(EnumType.STRING)
     private AccomodationStatus accomodationStatus = AccomodationStatus.AVAILABLE;
 
-    @ManyToOne
-    @JoinColumn(name = "reservation_id")
-    private Reservation reservation;
+//    @ManyToOne
+//    @JoinColumn(name = "reservation_id")
+//    private Reservation reservation;
+    @ManyToMany(mappedBy = "accommodations")
+    private Set<Reservation> reservations;
 }

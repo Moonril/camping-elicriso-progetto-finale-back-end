@@ -48,7 +48,7 @@ public class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/customers/**").permitAll());
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/accommodations/**").permitAll());
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/reservations/**").permitAll());
+        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/camping/reservations/**").permitAll());
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/restaurant/reservations/**").permitAll());
 
         httpSecurity.authorizeHttpRequests(http->http.anyRequest().denyAll());

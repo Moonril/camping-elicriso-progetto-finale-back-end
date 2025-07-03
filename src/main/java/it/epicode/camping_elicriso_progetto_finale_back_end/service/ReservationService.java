@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class ReservationService {
@@ -63,12 +64,24 @@ public class ReservationService {
         }
 
         Reservation reservation = new Reservation();
-
         reservation.setCheckInDate(reservationDto.getCheckInDate());
         reservation.setCheckOutDate(reservationDto.getCheckOutDate());
         reservation.setNumberOfCustomers(reservationDto.getNumberOfCustomers());
         reservation.setPreference(reservationDto.getPreference());
         reservation.setCustomer(customer);
+        reservation.setAccommodations(Set.of(accommodation));
+
+        List<Reservation> overlappingReservations =
+                reservationRepository.findOverlappingReservations(
+                        reservationDto.getAccommodationId(),
+                        reservationDto.getCheckInDate(),
+                        reservationDto.getCheckOutDate()
+                );
+
+        if (!overlappingReservations.isEmpty()) {
+            throw new IllegalStateException("Accommodation is already reserved during this period.");
+        }
+
 
         return reservationRepository.save(reservation);
     }
