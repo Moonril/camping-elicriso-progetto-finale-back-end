@@ -16,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/plots")
+@RequestMapping(path = "accommodations/plots")
 public class PlotController {
     @Autowired
     private PlotService plotService;

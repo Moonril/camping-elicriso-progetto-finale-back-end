@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "glamping")
+@Table(name = "glampings")
 public class Glamping extends Accommodation {
     private int numberOfBeds;
     private boolean airConditioning;

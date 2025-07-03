@@ -32,14 +32,14 @@ public class ReservationController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF', 'GUEST')")
     public Reservation getReservationById(@PathVariable int id) throws NotFoundException {
         return reservationService.getReservation(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN', 'GUEST')")
     public Reservation saveReservation(@RequestBody @Validated ReservationDto reservationDto, BindingResult bindingResult) throws NotFoundException, ValidationException {
         if (bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult.getAllErrors().stream()

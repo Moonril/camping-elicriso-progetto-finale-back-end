@@ -79,14 +79,14 @@ public class UserService {
     }
 
     public String patchUser(int id, MultipartFile file) throws NotFoundException, IOException {
-        User usertoPatch = getUser(id);
+        User userToPatch = getUser(id);
 
         String url = (String)cloudinary.uploader().upload(file.getBytes(),
                 Collections.emptyMap()).get("url");
 
-        usertoPatch.setAvatar(url);
+        userToPatch.setAvatar(url);
 
-        userRepository.save(usertoPatch);
+        userRepository.save(userToPatch);
 
         return url;
     }

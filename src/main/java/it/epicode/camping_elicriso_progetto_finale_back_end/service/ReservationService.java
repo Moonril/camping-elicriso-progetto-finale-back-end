@@ -41,13 +41,13 @@ public class ReservationService {
         Accommodation accommodation;
         switch (reservationDto.getAccommodationType()) {
             case PLOT:
-                accommodation = plotService.getPlot(reservationDto.getAccomodationId());
+                accommodation = plotService.getPlot(reservationDto.getAccommodationId());
                 break;
             case GLAMPING:
-                accommodation = glampingService.getGlamping(reservationDto.getAccomodationId());
+                accommodation = glampingService.getGlamping(reservationDto.getAccommodationId());
                 break;
             case MOBILEHOME:
-                accommodation = mobileHomeService.getMobileHome(reservationDto.getAccomodationId());
+                accommodation = mobileHomeService.getMobileHome(reservationDto.getAccommodationId());
                 break;
             default:
                 throw new IllegalArgumentException("Invalid accommodation type: " + reservationDto.getAccommodationType());

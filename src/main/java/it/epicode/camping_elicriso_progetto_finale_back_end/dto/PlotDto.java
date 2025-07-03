@@ -17,6 +17,6 @@ public class PlotDto {
     private String dimentions;
     @NotNull(message = "The field price cannot be empty")
     private BigDecimal price;
-    @NotBlank(message = "The field plotType cannot be empty")
+    @NotNull(message = "The field plotType cannot be empty")
     private PlotType plotType;
 }

@@ -32,7 +32,7 @@ public class ReservationDto {
     private int customerId;
 
     @NotNull(message = "The filed accomodationId cannot be null")
-    private int accomodationId;
+    private int accommodationId;
 
     @NotNull(message = "Accommodation type is required")
     private AccomodationType accommodationType;

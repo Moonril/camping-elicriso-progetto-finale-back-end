@@ -16,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/mobile-homes")
+@RequestMapping(path = "accommodations/mobile-homes")
 public class MobileHomeController {
     @Autowired
     private MobileHomeService mobileHomeService;
