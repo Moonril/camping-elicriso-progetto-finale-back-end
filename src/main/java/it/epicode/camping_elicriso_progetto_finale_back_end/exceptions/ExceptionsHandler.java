@@ -2,6 +2,7 @@ package it.epicode.camping_elicriso_progetto_finale_back_end.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -45,5 +46,12 @@ public class ExceptionsHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ApiError forbiddenException(ForbiddenException e){
         return buildError(e.getMessage());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody //todo ??
+    public String handleBadRequest(Exception ex) {
+        return ex.getMessage();
     }
 }

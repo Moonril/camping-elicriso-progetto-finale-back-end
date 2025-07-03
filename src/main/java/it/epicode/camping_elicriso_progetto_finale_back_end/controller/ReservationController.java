@@ -2,6 +2,7 @@ package it.epicode.camping_elicriso_progetto_finale_back_end.controller;
 
 
 import it.epicode.camping_elicriso_progetto_finale_back_end.dto.ReservationDto;
+import it.epicode.camping_elicriso_progetto_finale_back_end.enums.BookingStatus;
 import it.epicode.camping_elicriso_progetto_finale_back_end.exceptions.NotFoundException;
 import it.epicode.camping_elicriso_progetto_finale_back_end.exceptions.ValidationException;
 
@@ -15,6 +16,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/reservations")
@@ -58,10 +63,31 @@ public class ReservationController {
         return reservationService.updateReservation(id, reservationDto);
     }
 
+    @PatchMapping("/{id}/status")
+    public Reservation patchReservation(
+            @PathVariable int id,
+            @RequestBody Map<String, String> requestBody
+    ) throws NotFoundException {
+        String statusValue = requestBody.get("status");
+        if (statusValue == null) {
+            throw new IllegalArgumentException("Missing 'status' field");
+        }
+
+        BookingStatus newStatus = BookingStatus.valueOf(statusValue.toUpperCase());
+        return reservationService.patchReservation(id, newStatus);
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteReservation(@PathVariable int id) throws NotFoundException {
         reservationService.deleteReservation(id);
+    }
+
+    // cambiare booking status in completed
+    @GetMapping("/auto-complete")
+    public String autoCompleteReservations() {
+        reservationService.autoCompleteReservations();
+        return "Completed all applicable reservations.";
     }
 }
