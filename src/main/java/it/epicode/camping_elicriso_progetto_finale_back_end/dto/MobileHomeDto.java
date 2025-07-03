@@ -21,5 +21,5 @@ public class MobileHomeDto {
     @NotNull(message = "The field numberOfBedrooms cannot be empty")
     private int numberOfBedrooms;
     @NotNull(message = "The field airContitioning cannot be empty")
-    private boolean airContitioning;
+    private boolean airConditioning;
 }

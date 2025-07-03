@@ -1,5 +1,6 @@
 package it.epicode.camping_elicriso_progetto_finale_back_end.dto;
 
+import it.epicode.camping_elicriso_progetto_finale_back_end.enums.AccomodationType;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -27,6 +28,12 @@ public class ReservationDto {
     private int numberOfCustomers;
     private String preference;
 
-    @NotNull(message = "The field customerId cannot be empty")
+    @NotNull(message = "The field customerId cannot be null")
     private int customerId;
+
+    @NotNull(message = "The filed accomodationId cannot be null")
+    private int accomodationId;
+
+    @NotNull(message = "Accommodation type is required")
+    private AccomodationType accommodationType;
 }

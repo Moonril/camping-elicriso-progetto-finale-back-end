@@ -2,6 +2,7 @@ package it.epicode.camping_elicriso_progetto_finale_back_end.service;
 
 import it.epicode.camping_elicriso_progetto_finale_back_end.dto.ReservationDto;
 import it.epicode.camping_elicriso_progetto_finale_back_end.exceptions.NotFoundException;
+import it.epicode.camping_elicriso_progetto_finale_back_end.models.Accommodation;
 import it.epicode.camping_elicriso_progetto_finale_back_end.models.Customer;
 import it.epicode.camping_elicriso_progetto_finale_back_end.models.Reservation;
 import it.epicode.camping_elicriso_progetto_finale_back_end.repository.CustomerRepository;
@@ -25,8 +26,33 @@ public class ReservationService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private PlotService plotService;
+
+    @Autowired
+    private GlampingService glampingService;
+
+    @Autowired
+    private MobileHomeService mobileHomeService;
+
     public Reservation saveReservation(ReservationDto reservationDto) throws NotFoundException {
         Customer customer = customerService.getCustomer(reservationDto.getCustomerId());
+
+        Accommodation accommodation;
+        switch (reservationDto.getAccommodationType()) {
+            case PLOT:
+                accommodation = plotService.getPlot(reservationDto.getAccomodationId());
+                break;
+            case GLAMPING:
+                accommodation = glampingService.getGlamping(reservationDto.getAccomodationId());
+                break;
+            case MOBILEHOME:
+                accommodation = mobileHomeService.getMobileHome(reservationDto.getAccomodationId());
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid accommodation type: " + reservationDto.getAccommodationType());
+        }
+
         Reservation reservation = new Reservation();
 
         reservation.setCheckInDate(reservationDto.getCheckInDate());

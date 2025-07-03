@@ -7,9 +7,9 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "mobile_homes")
-public class MobileHome extends Accomodation {
+public class MobileHome extends Accommodation {
     private int numberOfBeds;
     private int numberOfBedrooms;
-    private boolean airContitioning;
+    private boolean airConditioning;
     // type?
 }

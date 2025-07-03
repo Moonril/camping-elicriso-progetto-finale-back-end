@@ -1,5 +1,6 @@
 package it.epicode.camping_elicriso_progetto_finale_back_end.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.epicode.camping_elicriso_progetto_finale_back_end.enums.BookingStatus;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -32,5 +34,8 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    //connessione con alloggio
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "reservation")
+    private List<Accommodation> accommodations;
 }

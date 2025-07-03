@@ -8,6 +8,6 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "plots")
-public class Plot extends Accomodation{
+public class Plot extends Accommodation {
     private PlotType plotType;
 }
