@@ -8,20 +8,19 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "reservations")
-public class Reservation {
+@Table(name = "bookings")
+public class Booking {
     @Id
     @GeneratedValue
     private int id;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    private LocalDateTime reservationCreationDate;
+    private LocalDateTime bookingCreationDate;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
 
@@ -39,8 +38,8 @@ public class Reservation {
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name = "reservation_accommodation",
-            joinColumns = @JoinColumn(name = "reservation_id"),
+            name = "booking_accommodation",
+            joinColumns = @JoinColumn(name = "booking_id"),
             inverseJoinColumns = @JoinColumn(name = "accommodation_id")
     )
     private Set<Accommodation> accommodations;

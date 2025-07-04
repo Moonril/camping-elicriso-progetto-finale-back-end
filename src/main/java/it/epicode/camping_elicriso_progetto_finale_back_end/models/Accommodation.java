@@ -26,5 +26,5 @@ public abstract class Accommodation {
 //    @JoinColumn(name = "reservation_id")
 //    private Reservation reservation;
     @ManyToMany(mappedBy = "accommodations")
-    private Set<Reservation> reservations;
+    private Set<Booking> bookings;
 }

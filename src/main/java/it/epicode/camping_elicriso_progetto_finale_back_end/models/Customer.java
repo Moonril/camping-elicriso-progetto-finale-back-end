@@ -22,6 +22,6 @@ public class Customer {
 
     @JsonIgnore
     @OneToMany(mappedBy = "customer")
-    private List<Reservation> reservations = new ArrayList<>();
+    private List<Booking> bookings = new ArrayList<>();
 
 }

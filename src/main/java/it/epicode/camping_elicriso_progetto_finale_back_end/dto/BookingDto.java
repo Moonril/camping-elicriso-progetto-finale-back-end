@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class ReservationDto {
+public class BookingDto {
 
 
     @NotNull(message = "The field checkInDate cannot be empty")
