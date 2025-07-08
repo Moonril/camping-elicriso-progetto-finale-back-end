@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
@@ -51,7 +52,13 @@ public class ExceptionsHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody //todo ??
-    public String handleBadRequest(Exception ex) {
-        return ex.getMessage();
+    public ApiError handleIllegalArgumentException(IllegalArgumentException e) {
+        return buildError(e.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiError handleAccessDenied(AccessDeniedException ex) {
+        return buildError("Accesso negato: " + ex.getMessage());
     }
 }

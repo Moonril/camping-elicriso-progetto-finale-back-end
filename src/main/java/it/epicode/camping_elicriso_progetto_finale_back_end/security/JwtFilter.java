@@ -33,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if(authorization== null || !authorization.startsWith("Bearer ")){
             throw new UnauthorizedException("Token not present");
         } else {
-            String token = authorization.substring(7); // mi prendo la parte dopo "bearer "
+            String token = authorization.substring(7);
             jwtTool.validateToken(token);
 
             try{
@@ -58,21 +58,36 @@ public class JwtFilter extends OncePerRequestFilter {
         }
     }
 
+//    @Override
+//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+//        String[] excludedEndpoints = new String[] {
+//                "/auth/**",
+//                "/html/**",
+//                "/login.html",
+//                "/register.html",
+//                "/css/**",
+//                "/js/**",
+//                "/images/**",
+//                "/camping/bookings/**"
+//        };
+//
+//        return Arrays.stream(excludedEndpoints)
+//                .anyMatch(e -> new AntPathMatcher().match(e, request.getServletPath()));
+//    }
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String[] excludedEndpoints = new String[] {
-                "/auth/**",
-                "/html/**",
-                "/login.html",
-                "/register.html",
-                "/css/**",
-                "/js/**",
-                "/images/**",
-                "/favicon.ico"
-        };
+        String path = request.getServletPath();
+        String method = request.getMethod();
 
-        return Arrays.stream(excludedEndpoints)
-                .anyMatch(e -> new AntPathMatcher().match(e, request.getServletPath()));
-    }
+        if (new AntPathMatcher().match("/auth/**", path)) return true;
+
+        if ((method.equals("GET") || method.equals("POST")) &&
+                (new AntPathMatcher().match("/camping/bookings", path) ||
+                        new AntPathMatcher().match("/camping/bookings/*", path))) {
+            return true;
+        }
+
+        return false;
+}
 
 }

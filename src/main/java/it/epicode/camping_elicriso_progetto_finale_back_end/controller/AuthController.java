@@ -37,7 +37,7 @@ public class AuthController {
         return userService.saveUser(userDto);
     }
 
-    @CrossOrigin(origins = "http://localhost:63342/")
+    @CrossOrigin(origins = "http://localhost:5173/")
     @PostMapping("/auth/login")
     public String login(@RequestBody @Validated LoginDto loginDto,
                         BindingResult bindingResult) throws ValidationException, NotFoundException {
