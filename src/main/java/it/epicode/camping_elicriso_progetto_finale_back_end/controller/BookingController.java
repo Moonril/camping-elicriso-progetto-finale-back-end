@@ -35,7 +35,7 @@ public class BookingController {
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF', 'GUEST')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     public Booking getBookingById(@PathVariable int id) throws NotFoundException {
         return bookingService.getBooking(id);
     }

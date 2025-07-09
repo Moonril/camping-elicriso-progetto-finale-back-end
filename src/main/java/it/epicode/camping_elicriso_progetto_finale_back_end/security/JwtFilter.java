@@ -58,36 +58,17 @@ public class JwtFilter extends OncePerRequestFilter {
         }
     }
 
-//    @Override
-//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-//        String[] excludedEndpoints = new String[] {
-//                "/auth/**",
-//                "/html/**",
-//                "/login.html",
-//                "/register.html",
-//                "/css/**",
-//                "/js/**",
-//                "/images/**",
-//                "/camping/bookings/**"
-//        };
-//
-//        return Arrays.stream(excludedEndpoints)
-//                .anyMatch(e -> new AntPathMatcher().match(e, request.getServletPath()));
-//    }
+
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String path = request.getServletPath();
-        String method = request.getMethod();
+        String[] excludedEndpoints = new String[] {
+                "/auth/**",
+                "/camping/bookings/*"
+        };
 
-        if (new AntPathMatcher().match("/auth/**", path)) return true;
+        return Arrays.stream(excludedEndpoints)
+                .anyMatch(e -> new AntPathMatcher().match(e, request.getServletPath()));
+    }
 
-        if ((method.equals("GET") || method.equals("POST")) &&
-                (new AntPathMatcher().match("/camping/bookings", path) ||
-                        new AntPathMatcher().match("/camping/bookings/*", path))) {
-            return true;
-        }
-
-        return false;
-}
 
 }

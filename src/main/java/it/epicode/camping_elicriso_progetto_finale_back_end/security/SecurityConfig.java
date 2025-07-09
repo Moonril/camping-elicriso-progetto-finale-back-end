@@ -1,5 +1,6 @@
 package it.epicode.camping_elicriso_progetto_finale_back_end.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -33,15 +35,10 @@ public class SecurityConfig {
         // non ho capito. serve per bloccare richiesta da indirizzi ip e porte diversi da dove si trova il servizio
         httpSecurity.cors(Customizer.withDefaults());
 
-        // sblocca login.html
-        httpSecurity.authorizeHttpRequests(http -> http
-                .requestMatchers("/login.html", "/register.html", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll());
 
 
         // prevede la approvazione o negazione di un servizio endpoint
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/auth/**").permitAll());
-
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/html/**").permitAll());
 
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/users/**").permitAll());
 
@@ -50,7 +47,8 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/camping/bookings/**").permitAll());
         httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/restaurant/reservations/**").permitAll());
 
-        httpSecurity.authorizeHttpRequests(http->http.anyRequest().denyAll());
+
+        //httpSecurity.authorizeHttpRequests(http->http.anyRequest().denyAll());
 
         return httpSecurity.build();
     }
@@ -76,3 +74,5 @@ public class SecurityConfig {
     }
 
 }
+
+
