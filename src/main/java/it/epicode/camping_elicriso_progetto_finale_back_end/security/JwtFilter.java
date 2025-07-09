@@ -63,7 +63,8 @@ public class JwtFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String[] excludedEndpoints = new String[] {
                 "/auth/**",
-                "/camping/bookings/*"
+                "/camping/bookings/**",
+                "/restaurant/reservations/**"
         };
 
         return Arrays.stream(excludedEndpoints)

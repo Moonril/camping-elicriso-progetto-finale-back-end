@@ -43,4 +43,9 @@ public class Booking {
             inverseJoinColumns = @JoinColumn(name = "accommodation_id")
     )
     private Set<Accommodation> accommodations;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "booking")
+    private Set<RestaurantReservation> restaurantReservations;
+
 }

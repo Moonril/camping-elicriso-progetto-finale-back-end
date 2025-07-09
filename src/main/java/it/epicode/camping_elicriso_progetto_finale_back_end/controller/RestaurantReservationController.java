@@ -30,14 +30,15 @@ public class RestaurantReservationController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     public RestaurantReservation getRestaurantReservationById(@PathVariable int id) throws NotFoundException {
         return restaurantReservationService.getRestaurantReservation(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @CrossOrigin(origins = "http://localhost:5173/")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public RestaurantReservation saveRestaurantReservation(@RequestBody @Validated RestaurantReservationDto restaurantReservationDto, BindingResult bindingResult) throws NotFoundException, ValidationException {
         if (bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult.getAllErrors().stream()

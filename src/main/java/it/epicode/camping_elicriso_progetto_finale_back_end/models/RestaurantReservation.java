@@ -17,12 +17,14 @@ public class RestaurantReservation {
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime reservationCreationDate;
+    private String name;
     private int numberOfPeople;
     private LocalDateTime reservationDate;
     private String additionalNotes;
+    private String phoneNumber;
 
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @JoinColumn(name = "booking_id")
+    private Booking booking;
 }

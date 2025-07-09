@@ -2,8 +2,10 @@ package it.epicode.camping_elicriso_progetto_finale_back_end.service;
 
 import it.epicode.camping_elicriso_progetto_finale_back_end.dto.RestaurantReservationDto;
 import it.epicode.camping_elicriso_progetto_finale_back_end.exceptions.NotFoundException;
+import it.epicode.camping_elicriso_progetto_finale_back_end.models.Booking;
 import it.epicode.camping_elicriso_progetto_finale_back_end.models.Customer;
 import it.epicode.camping_elicriso_progetto_finale_back_end.models.RestaurantReservation;
+import it.epicode.camping_elicriso_progetto_finale_back_end.repository.BookingRepository;
 import it.epicode.camping_elicriso_progetto_finale_back_end.repository.CustomerRepository;
 import it.epicode.camping_elicriso_progetto_finale_back_end.repository.RestaurantReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +21,20 @@ public class RestaurantReservationService {
     private RestaurantReservationRepository restaurantReservationRepository;
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private BookingRepository bookingRepository;
     @Autowired
-    private CustomerService customerService;
+    private BookingService bookingService;
 
     public RestaurantReservation saveRestaurantReservation(RestaurantReservationDto restaurantReservationDto) throws NotFoundException {
-        Customer customer = customerService.getCustomer(restaurantReservationDto.getCustomerId());
+        Booking booking = bookingService.getBooking(restaurantReservationDto.getBookingId());
         RestaurantReservation restaurantReservation = new RestaurantReservation();
 
         restaurantReservation.setNumberOfPeople(restaurantReservationDto.getNumberOfPeople());
         restaurantReservation.setReservationDate(restaurantReservationDto.getReservationDate());
         restaurantReservation.setAdditionalNotes(restaurantReservationDto.getAdditionalNotes());
-        restaurantReservation.setCustomer(customer);
+        restaurantReservation.setName(restaurantReservationDto.getName());
+        restaurantReservation.setPhoneNumber(restaurantReservationDto.getPhoneNumber());
+        restaurantReservation.setBooking(booking);
 
         return restaurantReservationRepository.save(restaurantReservation);
     }
@@ -51,10 +55,13 @@ public class RestaurantReservationService {
         restaurantReservationToUpdate.setNumberOfPeople(restaurantReservationDto.getNumberOfPeople());
         restaurantReservationToUpdate.setReservationDate(restaurantReservationDto.getReservationDate());
         restaurantReservationToUpdate.setAdditionalNotes(restaurantReservationDto.getAdditionalNotes());
+        restaurantReservationToUpdate.setName(restaurantReservationDto.getName());
+        restaurantReservationToUpdate.setPhoneNumber(restaurantReservationDto.getPhoneNumber());
 
-        if(restaurantReservationToUpdate.getCustomer().getId()!=restaurantReservationDto.getCustomerId()){
-            Customer customer = customerService.getCustomer(restaurantReservationDto.getCustomerId());
-            restaurantReservationToUpdate.setCustomer(customer);
+
+        if(restaurantReservationToUpdate.getBooking().getId()!=restaurantReservationDto.getBookingId()){
+            Booking booking = bookingService.getBooking(restaurantReservationDto.getBookingId());
+            restaurantReservationToUpdate.setBooking(booking);
         }
 
         return restaurantReservationRepository.save(restaurantReservationToUpdate);
