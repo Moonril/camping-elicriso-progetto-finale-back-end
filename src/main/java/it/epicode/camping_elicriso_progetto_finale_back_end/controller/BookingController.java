@@ -48,6 +48,9 @@ public class BookingController {
             throw new ValidationException(bindingResult.getAllErrors().stream()
                     .map(objectError -> objectError.getDefaultMessage()).reduce("", (e, s) -> e + s));
         }
+        if (bookingDto.getCustomerId() == null && bookingDto.getCustomer() == null) {
+            throw new ValidationException("Booking must include either customerId or customer data.");
+        }
         return bookingService.saveBooking(bookingDto);
     }
 

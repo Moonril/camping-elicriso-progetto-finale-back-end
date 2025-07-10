@@ -1,8 +1,10 @@
 package it.epicode.camping_elicriso_progetto_finale_back_end.dto;
 
 import it.epicode.camping_elicriso_progetto_finale_back_end.enums.AccomodationType;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -28,8 +30,12 @@ public class BookingDto {
     private int numberOfCustomers;
     private String preference;
 
-    @NotNull(message = "The field customerId cannot be null")
-    private int customerId;
+    //@NotNull(message = "The field customerId cannot be null")
+    private Integer customerId;
+
+    //@NotNull(message = "Customer details are required")
+    @Valid
+    private CustomerDto customer;
 
     @NotNull(message = "The filed accomodationId cannot be null")
     private int accommodationId;

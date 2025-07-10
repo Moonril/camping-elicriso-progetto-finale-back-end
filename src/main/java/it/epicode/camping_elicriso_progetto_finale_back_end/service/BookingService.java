@@ -1,6 +1,7 @@
 package it.epicode.camping_elicriso_progetto_finale_back_end.service;
 
 import it.epicode.camping_elicriso_progetto_finale_back_end.dto.BookingDto;
+import it.epicode.camping_elicriso_progetto_finale_back_end.dto.CustomerDto;
 import it.epicode.camping_elicriso_progetto_finale_back_end.enums.BookingStatus;
 import it.epicode.camping_elicriso_progetto_finale_back_end.exceptions.NotFoundException;
 import it.epicode.camping_elicriso_progetto_finale_back_end.models.Accommodation;
@@ -41,8 +42,60 @@ public class BookingService {
     @Autowired
     private MobileHomeService mobileHomeService;
 
+//    public Booking saveBooking(BookingDto bookingDto) throws NotFoundException {
+//        CustomerDto customerDto = bookingDto.getCustomer();
+//        Customer customer = customerService.saveCustomer(customerDto);
+//
+//        Accommodation accommodation;
+//        switch (bookingDto.getAccommodationType()) {
+//            case PLOT:
+//                accommodation = plotService.getPlot(bookingDto.getAccommodationId());
+//                break;
+//            case GLAMPING:
+//                accommodation = glampingService.getGlamping(bookingDto.getAccommodationId());
+//                break;
+//            case MOBILEHOME:
+//                accommodation = mobileHomeService.getMobileHome(bookingDto.getAccommodationId());
+//                break;
+//            default:
+//                throw new IllegalArgumentException("Invalid accommodation type: " + bookingDto.getAccommodationType());
+//        }
+//
+//        Booking booking = new Booking();
+//        booking.setCheckInDate(bookingDto.getCheckInDate());
+//        booking.setCheckOutDate(bookingDto.getCheckOutDate());
+//        booking.setNumberOfCustomers(bookingDto.getNumberOfCustomers());
+//        booking.setPreference(bookingDto.getPreference());
+//        booking.setCustomer(customer);
+//        booking.setAccommodations(Set.of(accommodation));
+//
+//        List<Booking> overlappingBookings =
+//                bookingRepository.findOverlappingBookings(
+//                        bookingDto.getAccommodationId(),
+//                        bookingDto.getCheckInDate(),
+//                        bookingDto.getCheckOutDate()
+//                );
+//
+//        if (!overlappingBookings.isEmpty()) {
+//            throw new IllegalStateException("Accommodation is already reserved during this period.");
+//        }
+//
+//
+//        return bookingRepository.save(booking);
+//    }
+
     public Booking saveBooking(BookingDto bookingDto) throws NotFoundException {
-        Customer customer = customerService.getCustomer(bookingDto.getCustomerId());
+        Customer customer;
+
+
+        if (bookingDto.getCustomerId() != null) {
+            customer = customerService.getCustomer(bookingDto.getCustomerId());
+        } else if (bookingDto.getCustomer() != null) {
+            customer = customerService.saveCustomer(bookingDto.getCustomer());
+        } else {
+            throw new IllegalArgumentException("Customer information is missing. Provide either customerId or customerDto.");
+        }
+
 
         Accommodation accommodation;
         switch (bookingDto.getAccommodationType()) {
@@ -59,6 +112,18 @@ public class BookingService {
                 throw new IllegalArgumentException("Invalid accommodation type: " + bookingDto.getAccommodationType());
         }
 
+
+        List<Booking> overlappingBookings = bookingRepository.findOverlappingBookings(
+                bookingDto.getAccommodationId(),
+                bookingDto.getCheckInDate(),
+                bookingDto.getCheckOutDate()
+        );
+
+        if (!overlappingBookings.isEmpty()) {
+            throw new IllegalStateException("Accommodation is already reserved during this period.");
+        }
+
+
         Booking booking = new Booking();
         booking.setCheckInDate(bookingDto.getCheckInDate());
         booking.setCheckOutDate(bookingDto.getCheckOutDate());
@@ -66,18 +131,6 @@ public class BookingService {
         booking.setPreference(bookingDto.getPreference());
         booking.setCustomer(customer);
         booking.setAccommodations(Set.of(accommodation));
-
-        List<Booking> overlappingBookings =
-                bookingRepository.findOverlappingBookings(
-                        bookingDto.getAccommodationId(),
-                        bookingDto.getCheckInDate(),
-                        bookingDto.getCheckOutDate()
-                );
-
-        if (!overlappingBookings.isEmpty()) {
-            throw new IllegalStateException("Accommodation is already reserved during this period.");
-        }
-
 
         return bookingRepository.save(booking);
     }
@@ -92,7 +145,23 @@ public class BookingService {
     }
 
 
-    public Booking updateBooking(int id, BookingDto bookingDto) throws NotFoundException{
+//    public Booking updateBooking(int id, BookingDto bookingDto) throws NotFoundException{
+//        Booking bookingToUpdate = getBooking(id);
+//
+//        bookingToUpdate.setCheckInDate(bookingDto.getCheckInDate());
+//        bookingToUpdate.setCheckOutDate(bookingDto.getCheckOutDate());
+//        bookingToUpdate.setNumberOfCustomers(bookingDto.getNumberOfCustomers());
+//        bookingToUpdate.setPreference(bookingDto.getPreference());
+//
+//        if(bookingToUpdate.getCustomer().getId()!= bookingDto.getCustomerId()){
+//            Customer customer = customerService.getCustomer(bookingDto.getCustomerId());
+//            bookingToUpdate.setCustomer(customer);
+//        }
+//
+//        return bookingRepository.save(bookingToUpdate);
+//    }
+
+    public Booking updateBooking(int id, BookingDto bookingDto) throws NotFoundException {
         Booking bookingToUpdate = getBooking(id);
 
         bookingToUpdate.setCheckInDate(bookingDto.getCheckInDate());
@@ -100,9 +169,20 @@ public class BookingService {
         bookingToUpdate.setNumberOfCustomers(bookingDto.getNumberOfCustomers());
         bookingToUpdate.setPreference(bookingDto.getPreference());
 
-        if(bookingToUpdate.getCustomer().getId()!= bookingDto.getCustomerId()){
-            Customer customer = customerService.getCustomer(bookingDto.getCustomerId());
-            bookingToUpdate.setCustomer(customer);
+        Customer currentCustomer = bookingToUpdate.getCustomer();
+
+        Customer newCustomer;
+
+        if (bookingDto.getCustomerId() != null) {
+            if (!currentCustomer.getId().equals(bookingDto.getCustomerId())) {
+                newCustomer = customerService.getCustomer(bookingDto.getCustomerId());
+                bookingToUpdate.setCustomer(newCustomer);
+            }
+        } else if (bookingDto.getCustomer() != null) {
+            newCustomer = customerService.saveCustomer(bookingDto.getCustomer());
+            bookingToUpdate.setCustomer(newCustomer);
+        } else {
+            throw new IllegalArgumentException("Customer information is missing: provide customerId or customerDto.");
         }
 
         return bookingRepository.save(bookingToUpdate);
