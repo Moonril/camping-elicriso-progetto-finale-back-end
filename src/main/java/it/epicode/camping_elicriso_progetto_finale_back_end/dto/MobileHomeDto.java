@@ -1,5 +1,7 @@
 package it.epicode.camping_elicriso_progetto_finale_back_end.dto;
 
+import it.epicode.camping_elicriso_progetto_finale_back_end.enums.MobileType;
+import it.epicode.camping_elicriso_progetto_finale_back_end.enums.PlotType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -22,4 +24,6 @@ public class MobileHomeDto {
     private int numberOfBedrooms;
     @NotNull(message = "The field airContitioning cannot be empty")
     private boolean airConditioning;
+    @NotNull(message = "The field mobileType cannot be empty")
+    private MobileType mobileType;
 }

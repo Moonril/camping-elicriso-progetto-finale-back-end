@@ -29,6 +29,7 @@ public class MobileHomeService {
         mobileHome.setNumberOfBeds(mobileHomeDto.getNumberOfBeds());
         mobileHome.setNumberOfBedrooms(mobileHomeDto.getNumberOfBedrooms());
         mobileHome.setAirConditioning(mobileHomeDto.isAirConditioning());
+        mobileHome.setMobileType(mobileHomeDto.getMobileType());
 
         return mobileHomeRepository.save(mobileHome);
     }
@@ -53,6 +54,7 @@ public class MobileHomeService {
         mobileHomeToUpdate.setNumberOfBeds(mobileHomeDto.getNumberOfBeds());
         mobileHomeToUpdate.setNumberOfBedrooms(mobileHomeDto.getNumberOfBedrooms());
         mobileHomeToUpdate.setAirConditioning(mobileHomeDto.isAirConditioning());
+        mobileHomeToUpdate.setMobileType(mobileHomeDto.getMobileType());
 
         return mobileHomeRepository.save(mobileHomeToUpdate);
     }

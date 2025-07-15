@@ -29,6 +29,7 @@ public class GlampingService {
         glamping.setPrice(glampingDto.getPrice());
         glamping.setNumberOfBeds(glampingDto.getNumberOfBeds());
         glamping.setAirConditioning(glampingDto.isAirConditioning());
+        glamping.setGlampingType(glampingDto.getGlampingType());
 
         return glampingRepository.save(glamping);
     }
@@ -52,6 +53,8 @@ public class GlampingService {
         glampingToUpdate.setPrice(glampingDto.getPrice());
         glampingToUpdate.setNumberOfBeds(glampingDto.getNumberOfBeds());
         glampingToUpdate.setAirConditioning(glampingDto.isAirConditioning());
+        glampingToUpdate.setGlampingType(glampingDto.getGlampingType());
+
 
         return glampingRepository.save(glampingToUpdate);
     }
