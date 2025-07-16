@@ -15,6 +15,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "accommodations/plots")
 public class PlotController {
@@ -22,7 +25,7 @@ public class PlotController {
     private PlotService plotService;
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
+
     public Page<Plot> getAllPlots(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
                                   @RequestParam(defaultValue = "id") String sortBy) {
@@ -30,7 +33,7 @@ public class PlotController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
+
     public Plot getPlotById(@PathVariable int id) throws NotFoundException {
         return plotService.getPlot(id);
     }
@@ -61,6 +64,17 @@ public class PlotController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deletePlot(@PathVariable int id) throws NotFoundException {
         plotService.deletePlot(id);
+    }
+
+    @GetMapping("/available")
+    public List<Plot> getAvailablePlots(
+            @RequestParam int guests,
+            @RequestParam String checkInDate,
+            @RequestParam String checkOutDate
+    ) {
+        LocalDate checkIn = LocalDate.parse(checkInDate);
+        LocalDate checkOut = LocalDate.parse(checkOutDate);
+        return plotService.getAvailablePlots(guests, checkIn, checkOut);
     }
     
     

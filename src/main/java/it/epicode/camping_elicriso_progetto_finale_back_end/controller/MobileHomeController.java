@@ -15,14 +15,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
-@RequestMapping(path = "accommodations/mobile-homes")
+@RequestMapping(path = "accommodations/mobilehomes")
 public class MobileHomeController {
     @Autowired
     private MobileHomeService mobileHomeService;
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
+
     public Page<MobileHome> getAllMobileHomes(@RequestParam(defaultValue = "0") int page,
                                               @RequestParam(defaultValue = "10") int size,
                                               @RequestParam(defaultValue = "id") String sortBy) {
@@ -30,7 +33,7 @@ public class MobileHomeController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
+
     public MobileHome getMobileHomeById(@PathVariable int id) throws NotFoundException {
         return mobileHomeService.getMobileHome(id);
     }
@@ -61,5 +64,16 @@ public class MobileHomeController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteMobileHome(@PathVariable int id) throws NotFoundException {
         mobileHomeService.deleteMobileHome(id);
+    }
+
+    @GetMapping("/available")
+    public List<MobileHome> getAvailableMobileHomes(
+            @RequestParam int guests,
+            @RequestParam String checkInDate,
+            @RequestParam String checkOutDate
+    ) {
+        LocalDate checkIn = LocalDate.parse(checkInDate);
+        LocalDate checkOut = LocalDate.parse(checkOutDate);
+        return mobileHomeService.getAvailableMobileHomes(guests, checkIn, checkOut);
     }
 }

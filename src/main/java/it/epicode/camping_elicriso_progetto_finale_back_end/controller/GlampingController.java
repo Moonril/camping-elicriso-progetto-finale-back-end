@@ -15,6 +15,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "accommodations/glampings")
 public class GlampingController {
@@ -22,7 +25,7 @@ public class GlampingController {
     private GlampingService glampingService;
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     public Page<Glamping> getAllGlampings(@RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "10") int size,
                                           @RequestParam(defaultValue = "id") String sortBy) {
@@ -30,7 +33,7 @@ public class GlampingController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
+    //@PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     public Glamping getGlampingById(@PathVariable int id) throws NotFoundException {
         return glampingService.getGlamping(id);
     }
@@ -61,5 +64,16 @@ public class GlampingController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteGlamping(@PathVariable int id) throws NotFoundException {
         glampingService.deleteGlamping(id);
+    }
+
+    @GetMapping("/available")
+    public List<Glamping> getAvailableGlampings(
+            @RequestParam int guests,
+            @RequestParam String checkInDate,
+            @RequestParam String checkOutDate
+    ) {
+        LocalDate checkIn = LocalDate.parse(checkInDate);
+        LocalDate checkOut = LocalDate.parse(checkOutDate);
+        return glampingService.getAvailableGlampings(guests, checkIn, checkOut);
     }
 }

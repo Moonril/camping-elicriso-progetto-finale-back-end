@@ -64,7 +64,10 @@ public class JwtFilter extends OncePerRequestFilter {
         String[] excludedEndpoints = new String[] {
                 "/auth/**",
                 "/camping/bookings/**",
-                "/restaurant/reservations/**"
+                "/restaurant/reservations/**",
+                "/accommodations/plots",
+                "/accommodations/plots/**",
+                "/accommodations/**"
         };
 
         return Arrays.stream(excludedEndpoints)

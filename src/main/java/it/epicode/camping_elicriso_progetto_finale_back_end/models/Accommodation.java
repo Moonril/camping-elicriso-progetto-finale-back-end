@@ -1,5 +1,6 @@
 package it.epicode.camping_elicriso_progetto_finale_back_end.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.epicode.camping_elicriso_progetto_finale_back_end.enums.AccomodationStatus;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -25,6 +26,7 @@ public abstract class Accommodation {
 //    @ManyToOne
 //    @JoinColumn(name = "reservation_id")
 //    private Reservation reservation;
+    @JsonIgnore
     @ManyToMany(mappedBy = "accommodations")
     private Set<Booking> bookings;
 }
