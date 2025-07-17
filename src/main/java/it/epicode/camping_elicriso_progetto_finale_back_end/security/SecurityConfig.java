@@ -100,8 +100,14 @@ public class SecurityConfig {
                         .requestMatchers("/api/me").authenticated()
                         .requestMatchers("/customers/**").permitAll()
                         .requestMatchers("/accommodations/**").permitAll()
-                        .requestMatchers("/camping/bookings/**").permitAll()
-                        .requestMatchers("/restaurant/reservations/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/camping/bookings/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/camping/bookings/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/camping/bookings/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/camping/bookings/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/restaurant/reservations/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/restaurant/reservations/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/restaurant/reservations/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/restaurant/reservations/**").hasAuthority("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -123,7 +129,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
-        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

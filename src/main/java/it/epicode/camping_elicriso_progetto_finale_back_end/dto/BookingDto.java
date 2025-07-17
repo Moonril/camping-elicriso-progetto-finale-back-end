@@ -37,9 +37,9 @@ public class BookingDto {
     @Valid
     private CustomerDto customer;
 
-    @NotNull(message = "The filed accomodationId cannot be null")
+    //@NotNull(message = "The filed accomodationId cannot be null")
     private int accommodationId;
 
-    @NotNull(message = "Accommodation type is required")
+    //@NotNull(message = "Accommodation type is required")
     private AccomodationType accommodationType;
 }

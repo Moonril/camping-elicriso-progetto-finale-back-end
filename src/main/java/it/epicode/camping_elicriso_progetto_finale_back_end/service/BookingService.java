@@ -145,48 +145,64 @@ public class BookingService {
     }
 
 
-//    public Booking updateBooking(int id, BookingDto bookingDto) throws NotFoundException{
-//        Booking bookingToUpdate = getBooking(id);
-//
-//        bookingToUpdate.setCheckInDate(bookingDto.getCheckInDate());
-//        bookingToUpdate.setCheckOutDate(bookingDto.getCheckOutDate());
-//        bookingToUpdate.setNumberOfCustomers(bookingDto.getNumberOfCustomers());
-//        bookingToUpdate.setPreference(bookingDto.getPreference());
-//
-//        if(bookingToUpdate.getCustomer().getId()!= bookingDto.getCustomerId()){
-//            Customer customer = customerService.getCustomer(bookingDto.getCustomerId());
-//            bookingToUpdate.setCustomer(customer);
-//        }
-//
-//        return bookingRepository.save(bookingToUpdate);
-//    }
-
     public Booking updateBooking(int id, BookingDto bookingDto) throws NotFoundException {
         Booking bookingToUpdate = getBooking(id);
+
 
         bookingToUpdate.setCheckInDate(bookingDto.getCheckInDate());
         bookingToUpdate.setCheckOutDate(bookingDto.getCheckOutDate());
         bookingToUpdate.setNumberOfCustomers(bookingDto.getNumberOfCustomers());
         bookingToUpdate.setPreference(bookingDto.getPreference());
 
-        Customer currentCustomer = bookingToUpdate.getCustomer();
 
-        Customer newCustomer;
-
+        Customer customer;
         if (bookingDto.getCustomerId() != null) {
-            if (!currentCustomer.getId().equals(bookingDto.getCustomerId())) {
-                newCustomer = customerService.getCustomer(bookingDto.getCustomerId());
-                bookingToUpdate.setCustomer(newCustomer);
-            }
+            customer = customerService.getCustomer(bookingDto.getCustomerId());
         } else if (bookingDto.getCustomer() != null) {
-            newCustomer = customerService.saveCustomer(bookingDto.getCustomer());
-            bookingToUpdate.setCustomer(newCustomer);
+            customer = customerService.saveCustomer(bookingDto.getCustomer());
         } else {
-            throw new IllegalArgumentException("Customer information is missing: provide customerId or customerDto.");
+            throw new IllegalArgumentException("Customer information is missing. Provide either customerId or customerDto.");
         }
+        bookingToUpdate.setCustomer(customer);
+
+
+        Accommodation accommodation = null;
+        if (bookingDto.getAccommodationType() != null && bookingDto.getAccommodationId() != 0) {
+            switch (bookingDto.getAccommodationType()) {
+                case PLOT:
+                    accommodation = plotService.getPlot(bookingDto.getAccommodationId());
+                    break;
+                case GLAMPING:
+                    accommodation = glampingService.getGlamping(bookingDto.getAccommodationId());
+                    break;
+                case MOBILEHOME:
+                    accommodation = mobileHomeService.getMobileHome(bookingDto.getAccommodationId());
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid accommodation type: " + bookingDto.getAccommodationType());
+            }
+
+
+            List<Booking> overlappingBookings = bookingRepository.findOverlappingBookings(
+                    bookingDto.getAccommodationId(),
+                    bookingDto.getCheckInDate(),
+                    bookingDto.getCheckOutDate()
+            );
+
+            overlappingBookings.removeIf(b -> b.getId() == id);
+
+            if (!overlappingBookings.isEmpty()) {
+                throw new IllegalStateException("Accommodation is already reserved during this period.");
+            }
+
+            bookingToUpdate.setAccommodations(Set.of(accommodation));
+        }
+
+
 
         return bookingRepository.save(bookingToUpdate);
     }
+
 
     public Booking patchBooking(int id, BookingStatus newStatus) throws NotFoundException, IllegalArgumentException {
         Booking booking = getBooking(id);
@@ -199,7 +215,6 @@ public class BookingService {
                 BookingStatus.COMPLETED, List.of()
         );
 
-        //non so se necessario
         if (!validTransitions.get(currentStatus).contains(newStatus)) {
             throw new IllegalArgumentException("Transition from " + currentStatus + " to " + newStatus + " not allowed.");
         }

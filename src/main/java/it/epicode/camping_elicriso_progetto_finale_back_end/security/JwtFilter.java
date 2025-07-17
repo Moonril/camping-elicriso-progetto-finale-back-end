@@ -62,18 +62,32 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getServletPath();
+        String method = request.getMethod();
+
+        AntPathMatcher matcher = new AntPathMatcher();
+
+        // Escludi solo GET e POST su /camping/bookings/**
+        if (matcher.match("/camping/bookings/**", path) && (method.equals("GET") || method.equals("POST"))) {
+            return true;
+        }
+
+        if (matcher.match("/restaurant/reservations/**", path) && (method.equals("GET") || method.equals("POST"))) {
+            return true;
+        }
+
+        // Altri endpoint da escludere completamente
         String[] excludedEndpoints = new String[] {
                 "/auth/**",
-                "/camping/bookings/**",
-                "/restaurant/reservations/**",
                 "/accommodations/plots",
                 "/accommodations/plots/**",
                 "/accommodations/**"
         };
 
         return Arrays.stream(excludedEndpoints)
-                .anyMatch(e -> new AntPathMatcher().match(e, request.getServletPath()));
+                .anyMatch(e -> matcher.match(e, path));
     }
+
 
 
 }
