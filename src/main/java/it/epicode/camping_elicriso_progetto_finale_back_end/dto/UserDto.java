@@ -2,9 +2,13 @@ package it.epicode.camping_elicriso_progetto_finale_back_end.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
     @NotEmpty(message = "The name field cannot be empty")
     private String name;
@@ -16,4 +20,5 @@ public class UserDto {
     private String username;
     @NotEmpty(message = "The password field cannot be empty")
     private String password; // todo buondaries password
+
 }

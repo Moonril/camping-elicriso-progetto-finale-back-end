@@ -27,7 +27,6 @@ public class BookingController {
     private BookingService bookingService;
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     public Page<Booking> getAllBookings(@RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "10") int size,
                                             @RequestParam(defaultValue = "id") String sortBy) {
@@ -35,7 +34,6 @@ public class BookingController {
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     public Booking getBookingById(@PathVariable int id) throws NotFoundException {
         return bookingService.getBooking(id);
     }

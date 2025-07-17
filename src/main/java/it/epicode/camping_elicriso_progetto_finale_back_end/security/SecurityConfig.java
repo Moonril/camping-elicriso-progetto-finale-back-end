@@ -19,53 +19,108 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+//@Configuration
+//@EnableWebSecurity // abilita la clase a essere responsabile della sicurezza dei servizi
+//@EnableMethodSecurity // abilita l'utilizzo della preautorizzazione direttamente sui metodi dei controller
+//public class SecurityConfig {
+//
+//
+//
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//        // primo metodo serve per creare in automatico una pagina di login, disabled
+//        httpSecurity.formLogin(http->http.disable());
+//        //csrf serve per evitare la possibilità di utilizzi di sessioni lasciate aperte
+//        httpSecurity.csrf(http->http.disable());
+//        // non ci interessa perchè i servizi rest non hanno sessione
+//        httpSecurity.sessionManagement(http->http.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//        // non ho capito. serve per bloccare richiesta da indirizzi ip e porte diversi da dove si trova il servizio
+//        httpSecurity.cors(Customizer.withDefaults());
+//
+//
+//
+//        // prevede la approvazione o negazione di un servizio endpoint
+//        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/auth/**").permitAll());
+//        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/users/**").permitAll());
+//        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/api/me").authenticated());
+//
+//
+//        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/customers/**").permitAll());
+//        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/accommodations/**").permitAll());
+//        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/camping/bookings/**").permitAll());
+//        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/restaurant/reservations/**").permitAll());
+//        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/accommodations/**").permitAll());
+//
+//
+//
+//
+//        //httpSecurity.authorizeHttpRequests(http->http.anyRequest().denyAll());
+//
+//        return httpSecurity.build();
+//    }
+//
+//
+//    @Bean
+//    public PasswordEncoder passwordEncoder(){
+//        return new BCryptPasswordEncoder(10); // verrà applicato 10 volte
+//    }
+//
+//    // cors
+//    @Bean//permette di abilitare l'accesso al servizio anche da parte di server diversi da quello su cui risiede
+//    //il servizio. In questo caso ho abilitato tutti i server ad accedere a tutti i servizi
+//    public CorsConfigurationSource corsConfigurationSource(){
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
+//        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//        corsConfiguration.setAllowedHeaders(List.of("*"));
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", corsConfiguration);
+//
+//        return source;
+//    }
+//
+//}
+
 @Configuration
-@EnableWebSecurity // abilita la clase a essere responsabile della sicurezza dei servizi
-@EnableMethodSecurity // abilita l'utilizzo della preautorizzazione direttamente sui metodi dei controller
+@EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        // primo metodo serve per creare in automatico una pagina di login, disabled
-        httpSecurity.formLogin(http->http.disable());
-        //csrf serve per evitare la possibilità di utilizzi di sessioni lasciate aperte
-        httpSecurity.csrf(http->http.disable());
-        // non ci interessa perchè i servizi rest non hanno sessione
-        httpSecurity.sessionManagement(http->http.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        // non ho capito. serve per bloccare richiesta da indirizzi ip e porte diversi da dove si trova il servizio
-        httpSecurity.cors(Customizer.withDefaults());
-
-
-
-        // prevede la approvazione o negazione di un servizio endpoint
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/auth/**").permitAll());
-
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/users/**").permitAll());
-
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/customers/**").permitAll());
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/accommodations/**").permitAll());
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/camping/bookings/**").permitAll());
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/restaurant/reservations/**").permitAll());
-        httpSecurity.authorizeHttpRequests(http->http.requestMatchers("/accommodations/**").permitAll());
-
-
-
-
-        //httpSecurity.authorizeHttpRequests(http->http.anyRequest().denyAll());
+        httpSecurity
+                .formLogin(http -> http.disable())
+                .csrf(http -> http.disable())
+                .sessionManagement(http -> http.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(Customizer.withDefaults())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/users/**").permitAll()
+                        .requestMatchers("/api/me").authenticated()
+                        .requestMatchers("/customers/**").permitAll()
+                        .requestMatchers("/accommodations/**").permitAll()
+                        .requestMatchers("/camping/bookings/**").permitAll()
+                        .requestMatchers("/restaurant/reservations/**").permitAll()
+                        .anyRequest().permitAll()
+                )
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
 
-
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder(10); // verrà applicato 10 volte
+    public JwtFilter jwtFilter() {
+        return new JwtFilter();
     }
 
-    // cors
-    @Bean//permette di abilitare l'accesso al servizio anche da parte di server diversi da quello su cui risiede
-    //il servizio. In questo caso ho abilitato tutti i server ad accedere a tutti i servizi
-    public CorsConfigurationSource corsConfigurationSource(){
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(10);
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
@@ -76,7 +131,4 @@ public class SecurityConfig {
 
         return source;
     }
-
 }
-
-
