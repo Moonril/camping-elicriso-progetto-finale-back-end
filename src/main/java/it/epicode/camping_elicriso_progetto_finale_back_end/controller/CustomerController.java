@@ -8,10 +8,13 @@ import it.epicode.camping_elicriso_progetto_finale_back_end.service.CustomerServ
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/customers")
@@ -26,6 +29,13 @@ public class CustomerController {
                                             @RequestParam(defaultValue = "10") int size,
                                             @RequestParam(defaultValue = "id") String sortBy) {
         return customerService.getAllCustomers(page, size, sortBy);
+    }
+
+    @GetMapping("/search")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
+    public ResponseEntity<List<Customer>> searchCustomersByName(@RequestParam String name) throws NotFoundException {
+        List<Customer> results = customerService.getCustomersByName(name);
+        return ResponseEntity.ok(results);
     }
 
     @GetMapping("/{id}")

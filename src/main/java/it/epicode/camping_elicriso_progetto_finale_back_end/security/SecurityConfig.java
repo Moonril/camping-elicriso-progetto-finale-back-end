@@ -104,7 +104,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/camping/bookings/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/camping/bookings/**").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/camping/bookings/**").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/restaurant/reservations/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/restaurant/reservations/**").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/restaurant/reservations/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/restaurant/reservations/**").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/restaurant/reservations/**").hasAuthority("ADMIN")

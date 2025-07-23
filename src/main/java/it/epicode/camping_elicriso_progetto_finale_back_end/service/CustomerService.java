@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CustomerService {
     @Autowired
@@ -34,6 +36,16 @@ public class CustomerService {
 
     public Customer getCustomer(int id) throws NotFoundException{
         return customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Customer with id: " + id + " not found"));
+    }
+
+    public List<Customer> getCustomersByName(String name) throws NotFoundException {
+        List<Customer> customers = customerRepository.findByNameContainingIgnoreCase(name);
+
+        if (customers.isEmpty()) {
+            throw new NotFoundException("Nessun cliente trovato con nome contenente: " + name);
+        }
+
+        return customers;
     }
 
 

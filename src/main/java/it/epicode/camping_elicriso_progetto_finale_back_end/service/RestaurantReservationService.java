@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RestaurantReservationService {
     @Autowired
@@ -46,6 +48,16 @@ public class RestaurantReservationService {
 
     public RestaurantReservation getRestaurantReservation(int id) throws NotFoundException{
         return restaurantReservationRepository.findById(id).orElseThrow(() -> new NotFoundException("RestaurantReservation with id: " + id + " not found"));
+    }
+
+    public List<RestaurantReservation> getReservationsByName(String name) throws NotFoundException {
+        List<RestaurantReservation> restaurantReservations = restaurantReservationRepository.findByNameContainingIgnoreCase(name);
+
+        if (restaurantReservations.isEmpty()) {
+            throw new NotFoundException("Nessun cliente trovato con nome contenente: " + name);
+        }
+
+        return restaurantReservations;
     }
 
 

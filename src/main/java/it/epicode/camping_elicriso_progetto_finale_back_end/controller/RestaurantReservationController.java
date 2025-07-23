@@ -5,15 +5,19 @@ import it.epicode.camping_elicriso_progetto_finale_back_end.dto.RestaurantReserv
 import it.epicode.camping_elicriso_progetto_finale_back_end.exceptions.NotFoundException;
 import it.epicode.camping_elicriso_progetto_finale_back_end.exceptions.ValidationException;
 
+import it.epicode.camping_elicriso_progetto_finale_back_end.models.Customer;
 import it.epicode.camping_elicriso_progetto_finale_back_end.models.RestaurantReservation;
 import it.epicode.camping_elicriso_progetto_finale_back_end.service.RestaurantReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/restaurant/reservations")
@@ -33,6 +37,13 @@ public class RestaurantReservationController {
     //@PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     public RestaurantReservation getRestaurantReservationById(@PathVariable int id) throws NotFoundException {
         return restaurantReservationService.getRestaurantReservation(id);
+    }
+
+    @GetMapping("/search")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
+    public ResponseEntity<List<RestaurantReservation>> searchReservationsByName(@RequestParam String name) throws NotFoundException {
+        List<RestaurantReservation> results = restaurantReservationService.getReservationsByName(name);
+        return ResponseEntity.ok(results);
     }
 
     @PostMapping

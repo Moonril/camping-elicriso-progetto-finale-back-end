@@ -72,7 +72,7 @@ public class JwtFilter extends OncePerRequestFilter {
             return true;
         }
 
-        if (matcher.match("/restaurant/reservations/**", path) && (method.equals("GET") || method.equals("POST"))) {
+        if (matcher.match("/restaurant/reservations/**", path) && (method.equals("POST"))) {
             return true;
         }
 
