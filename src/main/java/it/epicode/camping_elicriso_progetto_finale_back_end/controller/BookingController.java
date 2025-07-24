@@ -28,7 +28,7 @@ public class BookingController {
 
     @GetMapping
     public Page<Booking> getAllBookings(@RequestParam(defaultValue = "0") int page,
-                                            @RequestParam(defaultValue = "10") int size,
+                                            @RequestParam(defaultValue = "20") int size,
                                             @RequestParam(defaultValue = "id") String sortBy) {
         return bookingService.getAllBookings(page, size, sortBy);
     }

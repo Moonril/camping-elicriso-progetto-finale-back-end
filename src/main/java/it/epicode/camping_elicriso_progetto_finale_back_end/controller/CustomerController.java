@@ -26,7 +26,7 @@ public class CustomerController {
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     public Page<Customer> getAllCustomers(@RequestParam(defaultValue = "0") int page,
-                                            @RequestParam(defaultValue = "10") int size,
+                                            @RequestParam(defaultValue = "20") int size,
                                             @RequestParam(defaultValue = "id") String sortBy) {
         return customerService.getAllCustomers(page, size, sortBy);
     }

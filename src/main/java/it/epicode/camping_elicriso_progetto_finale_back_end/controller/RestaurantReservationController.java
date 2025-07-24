@@ -28,7 +28,7 @@ public class RestaurantReservationController {
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'STAFF')")
     public Page<RestaurantReservation> getAllRestaurantReservations(@RequestParam(defaultValue = "0") int page,
-                                                                    @RequestParam(defaultValue = "10") int size,
+                                                                    @RequestParam(defaultValue = "20") int size,
                                                                     @RequestParam(defaultValue = "id") String sortBy) {
         return restaurantReservationService.getAllRestaurantReservations(page, size, sortBy);
     }

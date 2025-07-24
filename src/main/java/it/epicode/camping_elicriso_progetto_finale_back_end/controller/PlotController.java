@@ -27,7 +27,7 @@ public class PlotController {
     @GetMapping
 
     public Page<Plot> getAllPlots(@RequestParam(defaultValue = "0") int page,
-                                  @RequestParam(defaultValue = "10") int size,
+                                  @RequestParam(defaultValue = "20") int size,
                                   @RequestParam(defaultValue = "id") String sortBy) {
         return plotService.getAllPlots(page, size, sortBy);
     }

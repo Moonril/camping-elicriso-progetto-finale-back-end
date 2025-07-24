@@ -27,7 +27,7 @@ public class MobileHomeController {
     @GetMapping
 
     public Page<MobileHome> getAllMobileHomes(@RequestParam(defaultValue = "0") int page,
-                                              @RequestParam(defaultValue = "10") int size,
+                                              @RequestParam(defaultValue = "20") int size,
                                               @RequestParam(defaultValue = "id") String sortBy) {
         return mobileHomeService.getAllMobileHomes(page, size, sortBy);
     }
