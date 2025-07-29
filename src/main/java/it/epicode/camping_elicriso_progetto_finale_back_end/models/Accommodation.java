@@ -22,6 +22,7 @@ public abstract class Accommodation {
     private BigDecimal price;
     @Enumerated(EnumType.STRING)
     private AccomodationStatus accomodationStatus = AccomodationStatus.AVAILABLE;
+    private String img;
 
 //    @ManyToOne
 //    @JoinColumn(name = "reservation_id")

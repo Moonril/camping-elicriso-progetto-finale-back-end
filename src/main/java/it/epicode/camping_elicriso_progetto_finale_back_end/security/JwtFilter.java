@@ -71,17 +71,18 @@ public class JwtFilter extends OncePerRequestFilter {
         if (matcher.match("/camping/bookings/**", path) && (method.equals("GET") || method.equals("POST"))) {
             return true;
         }
-
         if (matcher.match("/restaurant/reservations/**", path) && (method.equals("POST"))) {
             return true;
         }
 
+        if (matcher.match("/accommodations/**", path) && (method.equals("GET"))) {
+            return true;
+        }
+
+
         // Altri endpoint da escludere completamente
         String[] excludedEndpoints = new String[] {
-                "/auth/**",
-                "/accommodations/plots",
-                "/accommodations/plots/**",
-                "/accommodations/**"
+                "/auth/**"
         };
 
         return Arrays.stream(excludedEndpoints)
