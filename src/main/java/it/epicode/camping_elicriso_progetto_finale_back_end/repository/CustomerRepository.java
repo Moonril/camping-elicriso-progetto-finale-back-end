@@ -7,9 +7,12 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<Customer, Integer>,
         PagingAndSortingRepository<Customer, Integer> {
     @Query("SELECT c FROM Customer c WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%'))")
     List<Customer> findByNameContainingIgnoreCase(@Param("name") String name);
+    Optional<Customer> findByEmail(String email);
+
 }

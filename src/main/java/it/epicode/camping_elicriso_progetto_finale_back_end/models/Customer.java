@@ -9,7 +9,9 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "customers")
+@Table(name = "customers", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email")
+})
 public class Customer {
     @Id
     @GeneratedValue
@@ -17,6 +19,7 @@ public class Customer {
 
     private String name;
     private String surname;
+    @Column(nullable = false, unique = true)
     private String email;
     private String phoneNumber;
 

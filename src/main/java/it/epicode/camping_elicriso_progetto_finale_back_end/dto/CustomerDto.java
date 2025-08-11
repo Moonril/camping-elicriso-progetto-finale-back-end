@@ -13,7 +13,7 @@ public class CustomerDto {
     private String name;
     @NotBlank(message = "The surname field cannot be empty")
     private String surname;
-    @Email(message = "Email must have a valid, es: indirizzo@gmail.com")
+    @Email(message = "Email must have a valid format, es: address@gmail.com")
     @NotBlank(message = "The email field cannot be empty")
     private String email;
     @NotNull(message = "The phoneNumber field cannot be empty")

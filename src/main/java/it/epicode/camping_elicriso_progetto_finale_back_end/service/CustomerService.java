@@ -1,6 +1,7 @@
 package it.epicode.camping_elicriso_progetto_finale_back_end.service;
 
 import it.epicode.camping_elicriso_progetto_finale_back_end.dto.CustomerDto;
+import it.epicode.camping_elicriso_progetto_finale_back_end.exceptions.EmailAlreadyExistsException;
 import it.epicode.camping_elicriso_progetto_finale_back_end.exceptions.NotFoundException;
 import it.epicode.camping_elicriso_progetto_finale_back_end.models.Customer;
 import it.epicode.camping_elicriso_progetto_finale_back_end.repository.CustomerRepository;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -19,6 +21,11 @@ public class CustomerService {
     private CustomerRepository customerRepository;
 
     public Customer saveCustomer(CustomerDto customerDto) throws NotFoundException {
+        Optional<Customer> existingCustomer = customerRepository.findByEmail(customerDto.getEmail());
+
+        if (existingCustomer.isPresent()) {
+            throw new EmailAlreadyExistsException(customerDto.getEmail());
+        }
         Customer customer = new Customer();
 
         customer.setName(customerDto.getName());

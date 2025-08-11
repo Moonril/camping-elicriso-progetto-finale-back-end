@@ -51,7 +51,7 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ResponseBody //todo ??
+    @ResponseBody
     public ApiError handleIllegalArgumentException(IllegalArgumentException e) {
         return buildError(e.getMessage());
     }
@@ -60,5 +60,11 @@ public class ExceptionsHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ApiError handleAccessDenied(AccessDeniedException ex) {
         return buildError("Accesso negato: " + ex.getMessage());
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiError handleEmailAlreadyExists(EmailAlreadyExistsException ex) {
+        return buildError("Email already exists: " + ex.getMessage());
     }
 }
