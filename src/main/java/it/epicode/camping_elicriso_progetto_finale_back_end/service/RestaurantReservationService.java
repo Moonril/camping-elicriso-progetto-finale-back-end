@@ -28,7 +28,7 @@ public class RestaurantReservationService {
     private BookingService bookingService;
 
     public RestaurantReservation saveRestaurantReservation(RestaurantReservationDto restaurantReservationDto) throws NotFoundException {
-        Booking booking = bookingService.getBooking(restaurantReservationDto.getBookingId());
+//        Booking booking = bookingService.getBooking(restaurantReservationDto.getBookingId());
         RestaurantReservation restaurantReservation = new RestaurantReservation();
 
         restaurantReservation.setNumberOfPeople(restaurantReservationDto.getNumberOfPeople());
@@ -36,7 +36,7 @@ public class RestaurantReservationService {
         restaurantReservation.setAdditionalNotes(restaurantReservationDto.getAdditionalNotes());
         restaurantReservation.setName(restaurantReservationDto.getName());
         restaurantReservation.setPhoneNumber(restaurantReservationDto.getPhoneNumber());
-        restaurantReservation.setBooking(booking);
+//        restaurantReservation.setBooking(booking);
 
         return restaurantReservationRepository.save(restaurantReservation);
     }
@@ -71,10 +71,10 @@ public class RestaurantReservationService {
         restaurantReservationToUpdate.setPhoneNumber(restaurantReservationDto.getPhoneNumber());
 
 
-        if(restaurantReservationToUpdate.getBooking().getId()!=restaurantReservationDto.getBookingId()){
-            Booking booking = bookingService.getBooking(restaurantReservationDto.getBookingId());
-            restaurantReservationToUpdate.setBooking(booking);
-        }
+//        if(restaurantReservationToUpdate.getBooking().getId()!=restaurantReservationDto.getBookingId()){
+//            Booking booking = bookingService.getBooking(restaurantReservationDto.getBookingId());
+//            restaurantReservationToUpdate.setBooking(booking);
+//        }
 
         return restaurantReservationRepository.save(restaurantReservationToUpdate);
     }

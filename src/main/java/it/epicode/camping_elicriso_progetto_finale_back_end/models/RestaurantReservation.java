@@ -11,8 +11,9 @@ import java.time.LocalDateTime;
 @Table(name = "restaurant-reservations")
 public class RestaurantReservation {
     @Id
-    @GeneratedValue
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "restaurant_seq")
+    @SequenceGenerator(name = "restaurant_seq", sequenceName = "restaurant_sequence", initialValue = 100, allocationSize = 1)
+    private long id;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

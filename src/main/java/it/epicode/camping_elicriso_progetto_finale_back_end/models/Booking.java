@@ -2,10 +2,12 @@ package it.epicode.camping_elicriso_progetto_finale_back_end.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.epicode.camping_elicriso_progetto_finale_back_end.enums.BookingStatus;
+import it.epicode.camping_elicriso_progetto_finale_back_end.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -15,8 +17,9 @@ import java.util.Set;
 @Table(name = "bookings")
 public class Booking {
     @Id
-    @GeneratedValue
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "booking_seq")
+    @SequenceGenerator(name = "booking_seq", sequenceName = "booking_sequence", initialValue = 10000, allocationSize = 1)
+    private long id;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -28,6 +31,10 @@ public class Booking {
     private String preference;
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus = BookingStatus.PENDING;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
+    private BigDecimal totalPrice;
 
 
 

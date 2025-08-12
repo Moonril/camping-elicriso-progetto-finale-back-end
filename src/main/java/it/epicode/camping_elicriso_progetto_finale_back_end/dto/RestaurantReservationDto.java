@@ -29,5 +29,5 @@ public class RestaurantReservationDto {
 
 
 
-    private int bookingId;
+//    private int bookingId;
 }

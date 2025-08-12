@@ -6,6 +6,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -29,6 +30,9 @@ public class BookingDto {
     @Max(6) // numero di persone massimo, tanti quanti permette l'alloggio
     private int numberOfCustomers;
     private String preference;
+
+//    @NotNull
+//    private BigDecimal totalPrice;
 
     //@NotNull(message = "The field customerId cannot be null")
     private Integer customerId;

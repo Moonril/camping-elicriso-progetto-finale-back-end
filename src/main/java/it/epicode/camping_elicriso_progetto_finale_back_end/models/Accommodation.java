@@ -13,8 +13,9 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Accommodation {
     @Id
-    @GeneratedValue
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "accommodation_seq")
+    @SequenceGenerator(name = "accommodation_seq", sequenceName = "accommodation_sequence", initialValue = 100, allocationSize = 1)
+    private long id;
 
     private String name;
     private int maxNumberOfPeople;
